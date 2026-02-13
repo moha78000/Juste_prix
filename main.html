@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Le juste Prix</title>
+    <link rel="stylesheet" href="style_justeprix.css" />
+    <script>
+        function entierAleatoire(min, max)
+        {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function viderStockage(){
+            local_data = localStorage;
+            local_data.clear();
+            const table = document.getElementById("table-body");
+            table.innerHTML = '';
+        }
+
+        function verifier(){
+            const n1 = document.getElementById('n1').value;
+            const table = document.getElementById("table-body");
+            const td_n1 = document.createElement("td");
+            const tr = document.createElement("tr");
+
+            const table_res = document.getElementById("table-body_res");
+            const td_partie = document.createElement("td");
+            const td_coups = document.createElement("td");
+            const tr_res = document.createElement("tr");
+
+
+
+            local_data = localStorage;
+            if (local_data.length === 0) {
+                na = entierAleatoire(1,20);
+                local_data.setItem(local_data.key(0),na);
+            } else {
+                na = local_data.getItem(local_data.key(0));
+            }
+
+            if (n1 > na) {
+                alert("vous êtes au dessus du prix");
+            }
+
+            else if (n1 < na) {
+                alert("vous êtes en dessous du prix");
+            }
+
+            td_n1.innerHTML = n1;
+            tr.appendChild(td_n1);
+
+            table.appendChild(tr);
+
+            if (n1 === na) {
+                const nb_coup = table.children.length;
+                alert("Vous avez gagné en " + nb_coup + " coups");
+                td_coups.textContent = table.children.length.toString();
+                const int = parseInt(table_res.children.length) + 1
+                td_partie.innerHTML = "partie" + int;
+
+                tr_res.appendChild(td_partie);
+                tr_res.appendChild(td_coups);
+
+                table_res.appendChild(tr_res);
+                viderStockage();
+            }
+        }
+
+    </script>
+</head>
+<body>
+    <h1>Le juste Prix</h1>
+    <p>Trouver un nombre entier compris entre 1 et 20</p>
+    <div id="div_form">
+            <form>
+                <p>Le juste prix</p>
+                <label for="n1">n1</label>
+                <input type="number" min="1" max="20" id="n1">
+            </form>
+            <input type="button" value="Vérifier" onclick="verifier()">
+    </div>
+    <table id="table">
+        <thead>
+        <tr>
+            <th>nombre essayé</th>
+        </tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+    </table>
+    </div>
+    <table id="table_res">
+        <thead>
+        <tr>
+            <th>partie</th>
+            <th>coups</th>
+        </tr>
+        </thead>
+        <tbody id="table-body_res"></tbody>
+    </table>
+
+</body>
+</html>
